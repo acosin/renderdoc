@@ -577,6 +577,7 @@ void LibraryHooks::ReplayInitialise()
   realfork = (FORKPROC)dlsym(RTLD_NEXT, "fork");
   realexecle = (EXECLEPROC)dlsym(RTLD_NEXT, "execle");
   realexecve = (EXECVEPROC)dlsym(RTLD_NEXT, "execve");
+  std::cout << "LibraryHooks::ReplayInitialise realexecve = " << std::hex << realexecve << std::endl;
   realexecvpe = (EXECVPEPROC)dlsym(RTLD_NEXT, "execvpe");
 }
 
@@ -586,6 +587,7 @@ void LibraryHooks::BeginHookRegistration()
   realfork = (FORKPROC)dlsym(RTLD_NEXT, "fork");
   realexecle = (EXECLEPROC)dlsym(RTLD_NEXT, "execle");
   realexecve = (EXECVEPROC)dlsym(RTLD_NEXT, "execve");
+  std::cout << "LibraryHooks::BeginHookRegistration realexecve = " << std::hex << realexecve << std::endl;
   realexecvpe = (EXECVPEPROC)dlsym(RTLD_NEXT, "execvpe");
 }
 

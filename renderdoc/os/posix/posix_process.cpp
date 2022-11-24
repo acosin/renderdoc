@@ -610,7 +610,7 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
       chdir(workDir.c_str());
 
       fprintf(stderr, "exec begin\n");
-      execve2(appPath.c_str(), argv, envp);
+      execve(appPath.c_str(), argv, envp);
       
       fprintf(stderr, "exec failed\n");
       _exit(1);
