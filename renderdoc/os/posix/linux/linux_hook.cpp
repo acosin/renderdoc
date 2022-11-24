@@ -229,7 +229,7 @@ __attribute__((visibility("default"))) int execve2(const char *pathname, char *c
 	    std::cout << "idx = " << idx << " \t envp= " << envp[idx] << std::endl;
 	    idx ++;
     }
-    int ret = execve2(pathname, argv, envp);
+    int ret = execve(pathname, argv, envp);
     std::cout << "-------------ret = " << ret << "----------end envp-------" << std::endl;
     return ret;
   }
