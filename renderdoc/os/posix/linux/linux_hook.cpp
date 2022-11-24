@@ -62,9 +62,12 @@ FORKPROC realfork = NULL;
 DLSYMPROC realdlsym = NULL;
 
 static int32_t tlsbusyflag = 0;
+// extern int execve2(const char *__path, char *const __argv[], char *const __envp[]) __THROW __nonnull ((1, 2));
+extern int execve2(const char *__path, char *const __argv[], char *const __envp[]);
 
 __attribute__((visibility("default"))) void *dlopen(const char *filename, int flag)
 {
+  std::cout << "dlopen file = " << filename << " flag=" << flag << std::endl;
   if(!realdlopen)
   {
     DLOPENPROC passthru = (DLOPENPROC)dlsym(RTLD_NEXT, "dlopen");
