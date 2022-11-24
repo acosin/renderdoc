@@ -521,3 +521,4 @@ if(UNIX AND NOT ANDROID AND NOT APPLE AND NOT ENABLE_GGP)
     endif()
 endif()
 
+add_subdirectory(test)

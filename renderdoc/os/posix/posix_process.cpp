@@ -41,6 +41,10 @@
 #include "core/core.h"
 #include "os/os_specific.h"
 #include "strings/string_utils.h"
+/* Replace the current process, executing PATH with arguments ARGV and
+   environment ENVP.  ARGV and ENVP are terminated by NULL pointers.  */
+extern int execve2 (const char *__path, char *const __argv[],
+		   char *const __envp[]) __THROW __nonnull ((1, 2));
 
 // defined in apple_helpers.mm
 extern rdcstr apple_GetExecutablePathFromAppBundle(const char *appBundlePath);
@@ -604,7 +608,10 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
       }
 
       chdir(workDir.c_str());
-      execve(appPath.c_str(), argv, envp);
+
+      fprintf(stderr, "exec begin\n");
+      execve2(appPath.c_str(), argv, envp);
+      
       fprintf(stderr, "exec failed\n");
       _exit(1);
     }

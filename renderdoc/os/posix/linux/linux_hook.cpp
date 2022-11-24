@@ -28,6 +28,7 @@
 #include <unistd.h>
 #include <algorithm>
 #include <map>
+#include <iostream>
 #include "common/threading.h"
 #include "core/core.h"
 #include "core/settings.h"
@@ -194,21 +195,42 @@ __attribute__((visibility("default"))) int execvp(const char *pathname, char *co
   return execvpe(pathname, argv, environ);
 }
 
-__attribute__((visibility("default"))) int execve(const char *pathname, char *const argv[],
+__attribute__((visibility("default"))) int execve2(const char *pathname, char *const argv[],
                                                   char *const envp[])
 {
+	std::cout <<"pathname = " << pathname << std::endl;
   if(!realexecve)
   {
     if(Linux_Debug_PtraceLogging())
       RDCLOG("unhooked early execve(%s)", pathname);
 
+    std::cout <<"---------------------1" << std::endl;
     EXECVEPROC passthru = (EXECVEPROC)dlsym(RTLD_NEXT, "execve");
     return passthru(pathname, argv, envp);
   }
 
+    std::cout <<"---------------------2" << std::endl;
   if(RenderDoc::Inst().IsReplayApp())
-    return realexecve(pathname, argv, envp);
-
+  {
+    std::cout << "-----------------begin real execve------------------" << std::endl;
+    int index = 0;
+    while(argv[index])
+    {
+	    std::cout << "index = " << index << " \t argv= " << argv[index] <<  std::endl;
+	    index ++;
+    }
+    std::cout << "----------------end argv & begin envp----------------------" << std::endl;
+    int idx = 0 ;
+    while(envp[idx])
+    {
+	    std::cout << "idx = " << idx << " \t envp= " << envp[idx] << std::endl;
+	    idx ++;
+    }
+    int ret = execve(pathname, argv, envp);
+    std::cout << "-------------ret = " << ret << "----------end envp-------" << std::endl;
+    return ret;
+  }
+  std::cout << "--------------------------------3" << std::endl;
   rdcarray<char *> modifiedEnv;
   rdcstr envpStr;
 
@@ -218,14 +240,14 @@ __attribute__((visibility("default"))) int execve(const char *pathname, char *co
   {
     if(Linux_Debug_PtraceLogging())
       RDCLOG("unhooked execve(%s)", pathname);
-
+    std::cout << "------------------------4" << std::endl;
     GetUnhookedEnvp(envp, envpStr, modifiedEnv);
     return realexecve(pathname, argv, modifiedEnv.data());
   }
-
+  std::cout << "-------------------------5"<<std::endl;
   if(Linux_Debug_PtraceLogging())
     RDCLOG("hooked execve(%s)", pathname);
-
+  std::cout << "----------------------6" << std::endl;
   GetHookedEnvp(envp, envpStr, modifiedEnv);
   return realexecve(pathname, argv, modifiedEnv.data());
 }
