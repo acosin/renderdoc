@@ -577,7 +577,8 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
   const rdcstr appPath(GetAbsoluteAppPathFromName(appName));
 
   pid_t childPid = 0;
-
+  execve(appPath.c_str(), argv, envp);
+  return 0;
   // don't fork if we didn't find anything to execute.
   if(!appPath.empty())
   {
