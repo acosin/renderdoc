@@ -30,6 +30,7 @@ int main( int argc, char *argv[], char *env[])
         std::cout << "argv[1] = " << argv[1] << std::endl;
         const char *workdir = "/home/nvidia/workspace/wqg/QingLong/";
         chdir(workdir);
+        std::cout << "change workdir = " << workdir << std::endl;
         int ret = execve(argv[1], &argv[1], env); 
         if (  -1 == ret )  
         { 
