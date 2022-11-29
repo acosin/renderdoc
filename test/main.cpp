@@ -24,6 +24,8 @@ int main( int argc, char *argv[], char *env[])
     if(argv[1])
     {
 	    std::cout << "argv[1] = " << argv[1] << std::endl;
+      const char *workdir = "/home/nvidia/workspace/wqg/QingLong";
+      chdir(workdir);
 	    int ret = execve(argv[1], argv, env); 
     	if (  -1 == ret )  
     	{ 
