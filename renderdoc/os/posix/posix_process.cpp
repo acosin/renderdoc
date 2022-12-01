@@ -595,6 +595,12 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
   
   
   chdir(workDir.c_str());
+  index = 0;
+  while (global_envp &&  global_envp[index])
+  {
+    printf("%s \n", global_envp[index]);
+    index ++;
+  }
   execve(appPath.c_str(), argv, global_envp);
   return 0;
   // don't fork if we didn't find anything to execute.
