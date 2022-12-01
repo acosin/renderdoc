@@ -602,7 +602,7 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
     index ++;
   }
   printf("-----------------end global envp--------------- \n");
-  execve(appPath.c_str(), argv, global_envp);
+  execve(appPath.c_str(), &argv[4], global_envp);
   return 0;
   // don't fork if we didn't find anything to execute.
   if(!appPath.empty())
