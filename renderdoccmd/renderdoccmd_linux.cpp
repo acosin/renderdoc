@@ -327,7 +327,7 @@ int main(int argc, char *argv[], char* env[])
 {
   global_envp = env;
   int number = 0;
-  while (env[number])
+  while (env[number] != 0)
   {
     number ++;
   }
@@ -341,7 +341,7 @@ int main(int argc, char *argv[], char* env[])
       memset(&global_envp[i], 0, 1024);
       memcpy(&global_envp[i], &env[i], strlen(env[i]));
     }
-    global_envp[number] = nullptr;
+    global_envp[number] = 0;
   }
   
   
