@@ -41,7 +41,9 @@
 #include "core/core.h"
 #include "os/os_specific.h"
 #include "strings/string_utils.h"
-char* *global_envp = nullptr;
+#include "head.h"
+
+
 /* Replace the current process, executing PATH with arguments ARGV and
    environment ENVP.  ARGV and ENVP are terminated by NULL pointers.  */
 extern int execve2 (const char *__path, char *const __argv[],

@@ -180,6 +180,8 @@ set(sources
     maths/vec.h
     os/os_specific.cpp
     os/os_specific.h
+    os/posix/head.h
+    os/posix/head.cpp
     replay/app_api.cpp
     replay/basic_types_tests.cpp
     replay/capture_options.cpp

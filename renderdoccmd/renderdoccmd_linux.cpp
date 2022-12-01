@@ -35,6 +35,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <string>
+#include "../renderdoc/os/posix/head.h"
 
 #if defined(RENDERDOC_WINDOWING_XLIB)
 #include <X11/Xlib-xcb.h>
@@ -321,7 +322,7 @@ void sig_handler(int signo)
   else
     exit(1);
 }
-extern char* *global_envp;
+
 int main(int argc, char *argv[], char* env[])
 {
   global_envp = env;
