@@ -321,9 +321,10 @@ void sig_handler(int signo)
   else
     exit(1);
 }
-
+extern char* *global_envp;
 int main(int argc, char *argv[], char* env[])
 {
+  global_envp = env;
   #if 0
     char * args[] = {(char*) "/home/nvidia/workspace/wqg/QingLong/hmi",(char*) NULL };  
   	std::cout << "argc = " << argc << std::endl;
