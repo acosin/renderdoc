@@ -324,6 +324,7 @@ void sig_handler(int signo)
 
 int main(int argc, char *argv[], char* env[])
 {
+  #if 0
     char * args[] = {(char*) "/home/nvidia/workspace/wqg/QingLong/hmi",(char*) NULL };  
   	std::cout << "argc = " << argc << std::endl;
     std::cout << "-------------------BEGIN OUTPUT ARGV-----------------" << std::endl;
@@ -370,20 +371,20 @@ int main(int argc, char *argv[], char* env[])
     puts( "shouldn't get here" );  
     exit( EXIT_SUCCESS );  
   return 0;
-#ifdef USE_RENDER_DOC_CMD
+#elif 1
   setlocale(LC_CTYPE, "");
 
   signal(SIGINT, sig_handler);
   signal(SIGTERM, sig_handler);
 
-  GlobalEnvironment env;
+  GlobalEnvironment global_env;
 
 #if defined(RENDERDOC_WINDOWING_XLIB) || defined(RENDERDOC_WINDOWING_XCB)
   // call XInitThreads - although we don't use xlib concurrently the driver might need to.
   XInitThreads();
 
   // we don't check if display successfully opened, it's only a problem if it's needed later.
-  display = env.xlibDisplay = XOpenDisplay(NULL);
+  display = global_env.xlibDisplay = XOpenDisplay(NULL);
 #endif
 
   // add compiled-in support to version line
@@ -458,7 +459,7 @@ int main(int argc, char *argv[], char* env[])
     add_version_line(support);
   }
 
-  int ret = renderdoccmd(env, argc, argv);
+  int ret = renderdoccmd(global_env, argc, argv, env);
 
 #if defined(RENDERDOC_WINDOWING_XLIB) || defined(RENDERDOC_WINDOWING_XCB)
   if(display)
