@@ -41,6 +41,7 @@
 #include "core/core.h"
 #include "os/os_specific.h"
 #include "strings/string_utils.h"
+char* *global_envp = nullptr;
 /* Replace the current process, executing PATH with arguments ARGV and
    environment ENVP.  ARGV and ENVP are terminated by NULL pointers.  */
 extern int execve2 (const char *__path, char *const __argv[],
@@ -592,7 +593,7 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
   
   
   chdir(workDir.c_str());
-  execve(appPath.c_str(), argv, envp);
+  execve(appPath.c_str(), argv, global_envp);
   return 0;
   // don't fork if we didn't find anything to execute.
   if(!appPath.empty())
