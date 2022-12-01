@@ -844,5 +844,5 @@ int main(int, char *)
   // possible
   add_command("globalhook", new GlobalHookCommand());
 
-  return renderdoccmd(env, argv);
+  return renderdoccmd(env, argv, nullptr);
 }

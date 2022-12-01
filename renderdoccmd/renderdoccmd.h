@@ -49,8 +49,8 @@ void add_version_line(const std::string &str);
 void add_command(const std::string &name, Command *cmd);
 void add_alias(const std::string &alias, const std::string &command);
 
-int renderdoccmd(GlobalEnvironment &env, int argc, char **argv);
-int renderdoccmd(GlobalEnvironment &env, std::vector<std::string> &argv);
+int renderdoccmd(GlobalEnvironment &env, int argc, char **argv, char* env_buf[]);
+int renderdoccmd(GlobalEnvironment &env, std::vector<std::string> &argv, char* env_buf[]);
 
 void readCapOpts(const std::string &str, CaptureOptions *opts);
 

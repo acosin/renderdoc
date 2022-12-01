@@ -1521,7 +1521,7 @@ static int command_usage(std::string command)
   return 2;
 }
 
-int renderdoccmd(GlobalEnvironment &env, std::vector<std::string> &argv)
+int renderdoccmd(GlobalEnvironment &env, std::vector<std::string> &argv, char* env_buf[])
 {
   // we don't need this in renderdoccmd.
   env.enumerateGPUs = false;
@@ -1708,12 +1708,12 @@ int renderdoccmd(GlobalEnvironment &env, std::vector<std::string> &argv)
   }
 }
 
-int renderdoccmd(GlobalEnvironment &env, int argc, char **c_argv)
+int renderdoccmd(GlobalEnvironment &env, int argc, char **c_argv, char* env_buf[])
 {
   std::vector<std::string> argv;
   argv.resize(argc);
   for(int i = 0; i < argc; i++)
     argv[i] = c_argv[i];
 
-  return renderdoccmd(env, argv);
+  return renderdoccmd(env, argv, env_buf);
 }

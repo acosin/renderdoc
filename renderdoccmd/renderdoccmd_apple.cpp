@@ -133,5 +133,5 @@ int main(int argc, char *argv[])
     add_version_line(support);
   }
 
-  return renderdoccmd(env, argc, argv);
+  return renderdoccmd(env, argc, argv, nullptr);
 }
