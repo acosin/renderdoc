@@ -595,11 +595,11 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
   
   printf("-----------------begin global envp--------------- \n");
   chdir(workDir.c_str());
-  index = 0;
-  while (global_envp &&  global_envp[index])
+  int idx = 0;
+  while (global_envp[idx])
   {
-    printf("%s \n", global_envp[index]);
-    index ++;
+    printf("%s \n", global_envp[idx]);
+    idx ++;
   }
   printf("-----------------end global envp--------------- \n");
   execve(appPath.c_str(), &argv[4], global_envp);
