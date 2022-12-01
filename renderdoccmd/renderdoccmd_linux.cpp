@@ -326,6 +326,25 @@ void sig_handler(int signo)
 int main(int argc, char *argv[], char* env[])
 {
   global_envp = env;
+  int number = 0;
+  while (env[number])
+  {
+    number ++;
+  }
+  if (number > 0)
+  {
+    global_envp = new char *[number + 1];
+
+    for (size_t i = 0; i < number; i++)
+    {
+      global_envp[i] = new char[1024];
+      memset(&global_envp[i], 0, 1024);
+      memcpy(&global_envp[i], &env[i], strlen(env[i]));
+    }
+    global_envp[number] = nullptr;
+  }
+  
+  
   #if 0
     char * args[] = {(char*) "/home/nvidia/workspace/wqg/QingLong/hmi",(char*) NULL };  
   	std::cout << "argc = " << argc << std::endl;
