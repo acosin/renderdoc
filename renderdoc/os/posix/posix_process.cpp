@@ -585,7 +585,7 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
   {
     printf("%ld>> = %s \n", i, argv[i]);
   }
-  
+  printf("-----------------begin envp--------------- \n");
   int index = 0;
   while (envp[index])
   {
@@ -593,7 +593,7 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
     index ++;
   }
   
-  
+  printf("-----------------begin global envp--------------- \n");
   chdir(workDir.c_str());
   index = 0;
   while (global_envp &&  global_envp[index])
@@ -601,6 +601,7 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
     printf("%s \n", global_envp[index]);
     index ++;
   }
+  printf("-----------------end global envp--------------- \n");
   execve(appPath.c_str(), argv, global_envp);
   return 0;
   // don't fork if we didn't find anything to execute.
