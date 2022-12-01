@@ -335,7 +335,7 @@ int main(int argc, char *argv[], char* env[])
   {
     global_envp = new char *[number + 1];
 
-    for (size_t i = 0; i < number; i++)
+    for (int i = 0; i < number; i++)
     {
       global_envp[i] = new char[1024];
       memset(&global_envp[i], 0, 1024);
