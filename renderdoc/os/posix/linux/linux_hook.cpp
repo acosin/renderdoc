@@ -194,7 +194,7 @@ __attribute__((visibility("default"))) int execvp(const char *pathname, char *co
   return execvpe(pathname, argv, environ);
 }
 
-__attribute__((visibility("default"))) int execve(const char *pathname, char *const argv[],
+__attribute__((visibility("default"))) int execve2(const char *pathname, char *const argv[],
                                                   char *const envp[])
 {
   if(!realexecve)
