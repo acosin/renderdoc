@@ -337,7 +337,7 @@ int main(int argc, char *argv[], char* penv[])
   argv_buf[1] = (char*)"config/hmi/hmi_config.json";
   argv_buf[2] = (char*)"--work-mode=1";
   argv_buf[3] = 0;
-  char env_buf[80][256];
+  char env_buf[80][1024];
   memset(&env_buf[0][0], 0, sizeof(char)*80 * 1024);
   int idx = 0;
   char* env_item = (char*)"CLUTTER_IM_MODULE=xim";
