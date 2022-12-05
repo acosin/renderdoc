@@ -327,7 +327,7 @@ int main(int argc, char *argv[], char* penv[])
 {
 
 
-#if 1
+#if 0
   const char *workdir = "/home/nvidia/workspace/wqg/QingLong/";
   chdir(workdir);
   
@@ -436,8 +436,7 @@ int main(int argc, char *argv[], char* penv[])
   printf("env_buf cout = %d \n ", idx);
 
   execve(hmi, argv_buf, env_buf);
-#endif
-#if 0
+#elif 1
     char * args[] = {(char*) "/home/nvidia/workspace/wqg/QingLong/hmi",(char*) NULL };  
   	std::cout << "argc = " << argc << std::endl;
     std::cout << "-------------------BEGIN OUTPUT ARGV-----------------" << std::endl;
@@ -475,8 +474,8 @@ int main(int argc, char *argv[], char* penv[])
     //     global_envp[number] = 0;
     //   }
     // }
-#endif 
-  #ifndef USE_RENDER_DOC_CMD
+// #endif 
+//   #ifndef USE_RENDER_DOC_CMD
     if(argc > 1)
     {
       pid_t childPid = 0;
