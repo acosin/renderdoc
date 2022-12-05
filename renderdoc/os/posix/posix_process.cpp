@@ -580,7 +580,7 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
   printf("app path : %s  workdir = %s\n", appPath.c_str(), workDir.c_str());
   for (size_t i = 0; i < argvList.size(); i++)
   {
-    printf("%ld>> = %s \n", i, argv[i]);
+    printf("argvList %ld>> = %s \n", i, argv[i]);
   }
   printf("-----------------BEGIN ENVP-----------------------\n");
   int index = 0;
@@ -590,8 +590,16 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
     index ++;
   }
   printf("-----------------END ENVP-----------------------\n");
-  
-  
+  printf("-----------------BEGIN argv-----------------------\n");
+  {
+    int index = 0;
+    while (argv[index]) 
+    {
+      printf("argv[%d] = %s \n", index, argv[index]);
+      index++;
+    }
+  }
+  printf("-----------------end argv-----------------------\n");
   chdir(workDir.c_str());
   execve(appPath.c_str(), &argv[4], envp);
   return 0;
