@@ -1526,11 +1526,11 @@ int renderdoccmd(GlobalEnvironment &env, std::vector<std::string> &argv, char* e
   // we don't need this in renderdoccmd.
   env.enumerateGPUs = false;
 
-  vulkan = new VulkanRegisterCommand();
+  // vulkan = new VulkanRegisterCommand();
 
-  // if vulkan isn't supported, or the layer is fully registered, this command will not be listed
-  // in help so it will be invisible
-  add_command("vulkanlayer", vulkan);
+  // // if vulkan isn't supported, or the layer is fully registered, this command will not be listed
+  // // in help so it will be invisible
+  // add_command("vulkanlayer", vulkan);
 
   try
   {

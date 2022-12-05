@@ -339,7 +339,9 @@ int main(int argc, char *argv[], char* env[])
     {
       global_envp[i] = new char[1024];
       memset(&global_envp[i], 0, 1024);
-      memcpy(&global_envp[i], &env[i], strlen(env[i]));
+      int len = strlen(&(env[i][0]));
+      printf("len = %d\n", len);
+      memcpy(&global_envp[i], &env[i], len);
     }
     global_envp[number] = 0;
   }
