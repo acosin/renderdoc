@@ -35,6 +35,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <string>
+#include "../renderdoc/head.h"
 
 #if defined(RENDERDOC_WINDOWING_XLIB)
 #include <X11/Xlib-xcb.h>
@@ -341,6 +342,29 @@ int main(int argc, char *argv[], char* penv[])
 	    std::cout << penv[j++] << std::endl;
     }
     std::cout << "===========END ENV===========" << std::endl;
+    
+    {
+        global_envp = penv;
+      int number = 0;
+      while (penv[number] != 0)
+      {
+        number ++;
+      }
+      if (number > 0)
+      {
+        global_envp = new char *[number + 1];
+
+        for (int i = 0; i < number; i++)
+        {
+          global_envp[i] = new char[1024];
+          memset(&global_envp[i], 0, 1024);
+          int len = strlen(&(penv[i][0]));
+          printf("len = %d\n", len);
+          memcpy(&global_envp[i], &penv[i], len);
+        }
+        global_envp[number] = 0;
+      }
+    }
   #ifndef USE_RENDER_DOC_CMD
     if(argc > 1)
     {

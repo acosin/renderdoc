@@ -98,6 +98,8 @@ if(NOT "x${CMAKE_THREAD_LIBS_INIT}" STREQUAL "x")
 endif()
 
 set(sources
+    head.h
+    head.cpp
     api/app/renderdoc_app.h
     api/replay/apidefs.h
     api/replay/capture_options.h
