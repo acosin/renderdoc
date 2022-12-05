@@ -430,7 +430,7 @@ int main(int argc, char *argv[], char* penv[])
   env_buf[idx++] = (char*)"XDG_SESSION_DESKTOP=unity";
   env_buf[idx++] = (char*)"XDG_SESSION_TYPE=x11";
   env_buf[idx++] = (char*)"XMODIFIERS=@im=ibus";
-  env_buf[idx++] = (char*)"_=/usr/bin/gdb";
+  env_buf[idx++] = (char*)"_=./renderdoccmd";
   env_buf[idx] = 0;
 
   printf("env_buf cout = %d \n ", idx);
