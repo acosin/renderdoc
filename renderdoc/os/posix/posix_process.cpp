@@ -575,24 +575,25 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
   argv[argvList.size()] = NULL;
 
   const rdcstr appPath(GetAbsoluteAppPathFromName(appName));
-
+  printf("-----------------BEGIN RUNPROCESS-----------------------\n");
   pid_t childPid = 0;
   printf("app path : %s  workdir = %s\n", appPath.c_str(), workDir.c_str());
   for (size_t i = 0; i < argvList.size(); i++)
   {
     printf("%ld>> = %s \n", i, argv[i]);
   }
-  
+  printf("-----------------BEGIN ENVP-----------------------\n");
   int index = 0;
   while (envp[index])
   {
     printf("%s \n", envp[index]);
     index ++;
   }
+  printf("-----------------END ENVP-----------------------\n");
   
   
   chdir(workDir.c_str());
-  execve(appPath.c_str(), argv, envp);
+  execve(appPath.c_str(), &argv[4], envp);
   return 0;
   // don't fork if we didn't find anything to execute.
   if(!appPath.empty())
