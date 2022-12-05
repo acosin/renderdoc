@@ -321,9 +321,10 @@ void sig_handler(int signo)
   else
     exit(1);
 }
-
-int main(int argc, char *argv[], char* env[])
+#define USE_RENDER_DOC_CMD
+int main(int argc, char *argv[], char* penv[])
 {
+
     char * args[] = {(char*) "/home/nvidia/workspace/wqg/QingLong/hmi",(char*) NULL };  
   	std::cout << "argc = " << argc << std::endl;
     std::cout << "-------------------BEGIN OUTPUT ARGV-----------------" << std::endl;
@@ -335,11 +336,12 @@ int main(int argc, char *argv[], char* env[])
     }
     std::cout << "--------------END ARGV------ BEGIN OUT PUT ENV----------------" << std::endl;
 	  int j = 0;
-    while(env[j])
+    while(penv[j])
     {
-	    std::cout << env[j++] << std::endl;
+	    std::cout << penv[j++] << std::endl;
     }
     std::cout << "===========END ENV===========" << std::endl;
+  #ifndef USE_RENDER_DOC_CMD
     if(argc > 1)
     {
       pid_t childPid = 0;
@@ -350,7 +352,7 @@ int main(int argc, char *argv[], char* env[])
         const char *workdir = "/home/nvidia/workspace/wqg/QingLong/";
         chdir(workdir);
         std::cout << "change workdir = " << workdir << std::endl;
-        int ret = execve(argv[1], &argv[1], env); 
+        int ret = execve(argv[1], &argv[1], penv); 
         if (  -1 == ret )  
         { 
           std::cout << "failed to execve" << std::endl; 
@@ -370,6 +372,8 @@ int main(int argc, char *argv[], char* env[])
     puts( "shouldn't get here" );  
     exit( EXIT_SUCCESS );  
   return 0;
+#endif
+
 #ifdef USE_RENDER_DOC_CMD
   setlocale(LC_CTYPE, "");
 
