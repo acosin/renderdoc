@@ -327,7 +327,7 @@ int main(int argc, char *argv[], char* penv[])
 {
 
 
-#if 0
+#if 1
   const char *workdir = "/home/nvidia/workspace/wqg/QingLong/";
   chdir(workdir);
   
