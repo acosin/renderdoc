@@ -434,7 +434,13 @@ int main(int argc, char *argv[], char* penv[])
   env_buf[idx] = 0;
 
   printf("env_buf cout = %d \n ", idx);
-
+  int j = 0;
+  std::cout << "===========begin ENV===========" << std::endl;
+    while(penv[j])
+    {
+	    std::cout << penv[j++] << std::endl;
+    }
+    std::cout << "===========END ENV===========" << std::endl;
   execve(hmi, argv_buf, env_buf);
 #elif 1
     char * args[] = {(char*) "/home/nvidia/workspace/wqg/QingLong/hmi",(char*) NULL };  
