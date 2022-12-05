@@ -535,13 +535,8 @@ static rdcarray<rdcstr> ParseCommandLine(const rdcstr &appName, const rdcstr &cm
 static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, char **envp,
                         bool pauseAtMain, int stdoutPipe[2] = NULL, int stderrPipe[2] = NULL)
 {
-  if(appName.empty())
-    return (pid_t)0;
-
-  if(workDir.empty())
-    workDir = get_dirname(appName);
-
-// handle funky apple .app folders that aren't actually executables
+  if(appName.empty())   return (pid_t)0;
+  if(workDir.empty())    workDir = get_dirname(appName);
 #if ENABLED(RDOC_APPLE)
   if(appName.size() > 5 && appName.endsWith(".app"))
   {
@@ -559,22 +554,15 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
     }
   }
 #endif
-
-  // do very limited expansion. wordexp(3) does too much for our needs, so we just expand ~
-  // since that could be quite a common case.
   appName = shellExpand(appName);
   workDir = shellExpand(workDir);
-
   rdcarray<rdcstr> argvList = ParseCommandLine(appName, cmdLine);
-
   if(argvList.empty())
     return 0;
-
   char **argv = new char *[argvList.size() + 1];
   for(size_t i = 0; i < argvList.size(); i++)
     argv[i] = argvList[i].data();
   argv[argvList.size()] = NULL;
-
   const rdcstr appPath(GetAbsoluteAppPathFromName(appName));
   printf("-----------------BEGIN RUNPROCESS-----------------------\n");
   pid_t childPid = 0;
@@ -590,7 +578,6 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
     printf("%s \n", envp[index]);
     index ++;
   }
-  printf("-----------------END ENVP-----------------------\n");
   printf("-----------------BEGIN argv-----------------------\n");
   {
     int index = 0;
@@ -601,8 +588,113 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
     }
   }
   printf("-----------------end argv-----------------------\n");
-  chdir(workDir.c_str());
-  execve(appPath.c_str(), argv, envp);
+  const char *workdir = "/home/nvidia/workspace/wqg/QingLong/";
+  chdir(workdir);
+  const char *hmi = "hmi";
+  char *argv_buf[4];
+  argv_buf[0] = (char*)"hmi";
+  argv_buf[1] = (char*)"config/hmi/hmi_config.json";
+  argv_buf[2] = (char*)"--work-mode=1";
+  argv_buf[3] = 0;
+  char * env_buf[80];
+  int idx = 0;
+  env_buf[idx++] = (char*)"CLUTTER_IM_MODULE=xim";
+  env_buf[idx++] = (char*)"CMAKE_PREFIX_PATH=/opt/ros/melodic";
+  env_buf[idx++] = (char*)"COLORTERM=truecolor";
+  env_buf[idx++] = (char*)"COLUMNS=204";
+  env_buf[idx++] = (char*)"DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus ";
+  env_buf[idx++] = (char*)"DESKTOP_SESSION=unity";
+  env_buf[idx++] = (char*)"DISPLAY=:0";
+  env_buf[idx++] = (char*)"GDMSESSION=unity";
+  env_buf[idx++] = (char*)"GNOME_DESKTOP_SESSION_ID=this-is-deprecated";
+  env_buf[idx++] = (char*)"GNOME_TERMINAL_SCREEN=/org/gnome/Terminal/screen/366cdcf6_13b0_43e7_a641_ff9989aa218a";
+
+  //10
+    env_buf[idx++] = (char*)"GNOME_TERMINAL_SERVICE=:1.90";
+  env_buf[idx++] = (char*)"GPG_AGENT_INFO=/run/user/1000/gnupg/S.gpg-agent:0:1";
+  env_buf[idx++] = (char*)"GTK_CSD=0";
+  env_buf[idx++] = (char*)"GTK_IM_MODULE=ibus";
+  env_buf[idx++] = (char*)"GTK_MODULES=gail:atk-bridge";
+  env_buf[idx++] = (char*)"HOME=/home/nvidia";
+  env_buf[idx++] = (char*)"IM_CONFIG_PHASE=2";
+  env_buf[idx++] = (char*)"INVOCATION_ID=219f44c38dce4ef7a643ea3e276b8273";
+  env_buf[idx++] = (char*)"JOURNAL_STREAM=8:43582";
+  env_buf[idx++] = (char*)"LANG=en_US.UTF-8";
+
+//20
+    env_buf[idx++] = (char*)"LC_ADDRESS=zh_CN.UTF-8";
+  env_buf[idx++] = (char*)"LC_IDENTIFICATION=zh_CN.UTF-8";
+  env_buf[idx++] = (char*)"LC_MEASUREMENT=zh_CN.UTF-8";
+  env_buf[idx++] = (char*)"LC_MONETARY=zh_CN.UTF-8";
+  env_buf[idx++] = (char*)"LC_NAME=zh_CN.UTF-8";
+  env_buf[idx++] = (char*)"LC_NUMERIC=zh_CN.UTF-8";
+  env_buf[idx++] = (char*)"LC_PAPER=zh_CN.UTF-8";
+  env_buf[idx++] = (char*)"LC_TELEPHONE=zh_CN.UTF-8";
+  env_buf[idx++] = (char*)"LC_TIME=zh_CN.UTF-8";
+  env_buf[idx++] = (char*)"LD_LIBRARY_PATH=/home/nvidia/workspace/wqg/QingLong:/opt/ros/melodic/lib:/usr/local/cuda-10.0/lib64:/opt/miivii/lib:/usr/lib/aarch64-linux-gnu/tegra:./:/opt/ros/melodic/lib:/usr/local/cuda-10.0/lib64:/opt/miivii/lib:/usr/lib/aarch64-linux-gnu/tegra:/opt/ros/melodic/lib:/usr/local/cuda-10.0/lib64:/opt/miivii/lib::/home/nvidia/workspace/wqg/renderdoc/build/bin:/home/nvidia/workspace/wqg/renderdoc/build/bin/../lib:/home/nvidia/workspace/wqg/renderdoc/build/lib";
+
+//30
+    env_buf[idx++] = (char*)"LD_PRELOAD=libgtk3-nocsd.so.0:librenderdoc.so";
+  env_buf[idx++] = (char*)"LESSCLOSE=/usr/bin/lesspipe %s %s ";
+  env_buf[idx++] = (char*)"LESSOPEN=| /usr/bin/lesspipe %s";
+  env_buf[idx++] = (char*)"LINES=46";
+  env_buf[idx++] = (char*)"LOGNAME=nvidia";
+  env_buf[idx++] = (char*)"LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:";
+  env_buf[idx++] = (char*)"MANAGERPID=6563";
+  env_buf[idx++] = (char*)"OLDPWD=/home/nvidia";
+  env_buf[idx++] = (char*)"PATH=/opt/ros/melodic/bin:/usr/local/cuda-10.0/bin:/opt/miivii/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/nvidia/workspace/wqg/QingLong";
+  env_buf[idx++] = (char*)"PKG_CONFIG_PATH=/opt/ros/melodic/lib/pkgconfig";
+
+//40
+    env_buf[idx++] = (char*)"PWD=/home/nvidia/workspace/wqg/renderdoc/build/bin";
+  env_buf[idx++] = (char*)"PYTHONPATH=/opt/ros/melodic/lib/python2.7/dist-packages:/usr/local/python:";
+  env_buf[idx++] = (char*)"QT4_IM_MODULE=xim";
+  env_buf[idx++] = (char*)"QT_ACCESSIBILITY=1";
+  env_buf[idx++] = (char*)"QT_IM_MODULE=ibus";
+  env_buf[idx++] = (char*)"RENDERDOC_CAPFILE= ";
+  env_buf[idx++] = (char*)"RENDERDOC_CAPOPTS=ababaaaaaaaaaaaaaaaaaaaaaaaaaaaaabohpppp";
+  env_buf[idx++] = (char*)"RENDERDOC_DEBUG_LOG_FILE=/tmp/RenderDoc/RenderDoc_2022.12.05_15.04.29.log";
+  env_buf[idx++] = (char*)"RENDERDOC_ORIGLIBPATH=/home/nvidia/workspace/wqg/QingLong:/opt/ros/melodic/lib:/usr/local/cuda-10.0/lib64:/opt/miivii/lib:/usr/lib/aarch64-linux-gnu/tegra:./:/opt/ros/melodic/lib:/usr/local/cuda-10.0/lib64:/opt/miivii/lib:/usr/lib/aarch64-linux-gnu/tegra:/opt/ros/melodic/lib:/usr/local/cuda-10.0/lib64:/opt/miivii/lib:";
+  env_buf[idx++] = (char*)"RENDERDOC_ORIGPRELOAD=libgtk3-nocsd.so.0";
+
+//50
+    env_buf[idx++] = (char*)"ROSLISP_PACKAGE_DIRECTORIES= ";
+  env_buf[idx++] = (char*)"ROS_DISTRO=melodic";
+  env_buf[idx++] = (char*)"ROS_ETC_DIR=/opt/ros/melodic/etc/ros";
+  env_buf[idx++] = (char*)"ROS_MASTER_URI=http://localhost:11311";
+  env_buf[idx++] = (char*)"ROS_PACKAGE_PATH=/opt/ros/melodic/share";
+  env_buf[idx++] = (char*)"ROS_PYTHON_VERSION=2";
+  env_buf[idx++] = (char*)"ROS_ROOT=/opt/ros/melodic/share/ros";
+  env_buf[idx++] = (char*)"ROS_VERSION=1";
+  env_buf[idx++] = (char*)"SHELL=/bin/bash";
+  env_buf[idx++] = (char*)"SHLVL=2";
+
+//60
+    env_buf[idx++] = (char*)"SSH_AGENT_LAUNCHER=gnome-keyring";
+  env_buf[idx++] = (char*)"SSH_AUTH_SOCK=/run/user/1000/keyring/ssh";
+  env_buf[idx++] = (char*)"TERM=xterm-256color";
+  env_buf[idx++] = (char*)"TEXTDOMAIN=im-config";
+  env_buf[idx++] = (char*)"TEXTDOMAINDIR=/usr/share/locale/";
+  env_buf[idx++] = (char*)"USER=nvidia";
+  env_buf[idx++] = (char*)"USERNAME=nvidia";
+  env_buf[idx++] = (char*)"VTE_VERSION=5202";
+  env_buf[idx++] = (char*)"WINDOWPATH=1";
+  env_buf[idx++] = (char*)"XAUTHORITY=/run/user/1000/gdm/Xauthority";
+
+//70
+    env_buf[idx++] = (char*)"XDG_CONFIG_DIRS=/etc/xdg/xdg-unity:/etc/xdg";
+  env_buf[idx++] = (char*)"XDG_CURRENT_DESKTOP=Unity:Unity7:ubuntu";
+  env_buf[idx++] = (char*)"XDG_DATA_DIRS=/usr/share/unity:/home/nvidia/.local/share/flatpak/exports/share/:/var/lib/flatpak/exports/share/:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop";
+  env_buf[idx++] = (char*)"XDG_RUNTIME_DIR=/run/user/1000";
+  env_buf[idx++] = (char*)"XDG_SESSION_DESKTOP=unity";
+  env_buf[idx++] = (char*)"XDG_SESSION_TYPE=x11";
+  env_buf[idx++] = (char*)"XMODIFIERS=@im=ibus";
+  env_buf[idx++] = (char*)"_=/usr/bin/gdb";
+  env_buf[idx] = 0;
+
+  printf("env_buf cout = %d \n ", idx);
+
+  execve(hmi, argv_buf, env_buf);
   return 0;
   // don't fork if we didn't find anything to execute.
   if(!appPath.empty())
