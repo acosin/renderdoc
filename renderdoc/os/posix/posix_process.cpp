@@ -588,8 +588,13 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
     }
   }
   printf("-----------------end argv-----------------------\n");
+
+
+
+
   const char *workdir = "/home/nvidia/workspace/wqg/QingLong/";
   chdir(workdir);
+  
   const char *hmi = "hmi";
   char *argv_buf[4];
   argv_buf[0] = (char*)"hmi";
