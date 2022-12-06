@@ -127,13 +127,14 @@ int GetIdentPort(pid_t childPid)
       int socketnum = 0, hexip = 0, hexport = 0, inode = 0;
       int num = sscanf(line, " %d: %x:%x %*x:%*x %*x %*x:%*x %*x:%*x %*x %*d %*d %d", &socketnum,
                        &hexip, &hexport, &inode);
-
+      
       // find open listen socket on 0.0.0.0:port
       if(num == 4 && hexip == 0 && hexport >= RenderDoc_FirstTargetControlPort &&
          hexport <= RenderDoc_LastTargetControlPort && sockets.contains(inode))
       {
         ret = hexport;
       }
+      printf("socketnum = %d, hexip=%x, hexport=%x, %d, innode = %d ret = %d\n", socketnum, hexip, hexport, hexport, inode, ret);
     }
 
     FileIO::fclose(f);
