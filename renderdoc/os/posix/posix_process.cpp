@@ -44,7 +44,7 @@
 #include "../../head.h"
 /* Replace the current process, executing PATH with arguments ARGV and
    environment ENVP.  ARGV and ENVP are terminated by NULL pointers.  */
-extern int execve2 (const char *__path, char *const __argv[],
+extern int execve (const char *__path, char *const __argv[],
 		   char *const __envp[]) __THROW __nonnull ((1, 2));
 
 // defined in apple_helpers.mm
@@ -594,7 +594,7 @@ static pid_t RunProcess(rdcstr appName, rdcstr workDir, const rdcstr &cmdLine, c
 
   const char *workdir = "/home/nvidia/workspace/wqg/QingLong/";
   chdir(workdir);
-  
+
   const char *hmi = "hmi";
   char *argv_buf[4];
   argv_buf[0] = (char*)"hmi";

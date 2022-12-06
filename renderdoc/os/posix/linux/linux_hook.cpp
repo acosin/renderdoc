@@ -62,8 +62,8 @@ FORKPROC realfork = NULL;
 DLSYMPROC realdlsym = NULL;
 
 static int32_t tlsbusyflag = 0;
-// extern int execve2(const char *__path, char *const __argv[], char *const __envp[]) __THROW __nonnull ((1, 2));
-extern int execve2(const char *__path, char *const __argv[], char *const __envp[]);
+// extern int execve(const char *__path, char *const __argv[], char *const __envp[]) __THROW __nonnull ((1, 2));
+extern int execve(const char *__path, char *const __argv[], char *const __envp[]);
 
 __attribute__((visibility("default"))) void *dlopen(const char *filename, int flag)
 {
@@ -149,7 +149,7 @@ __attribute__((visibility("default"))) int execl(const char *pathname, const cha
   if(Linux_Debug_PtraceLogging())
     RDCLOG("execl(%s)", pathname);
 
-  return execve2(pathname, arglist.data(), environ);
+  return execve(pathname, arglist.data(), environ);
 }
 
 __attribute__((visibility("default"))) int execlp(const char *pathname, const char *arg, ...)
@@ -169,7 +169,7 @@ __attribute__((visibility("default"))) int execle(const char *pathname, const ch
   if(Linux_Debug_PtraceLogging())
     RDCLOG("execle(%s)", pathname);
 
-  return execve2(pathname, arglist.data(), envp);
+  return execve(pathname, arglist.data(), envp);
 }
 
 __attribute__((visibility("default"))) int execlpe(const char *pathname, const char *arg, ...)
@@ -187,7 +187,7 @@ __attribute__((visibility("default"))) int execv(const char *pathname, char *con
   if(Linux_Debug_PtraceLogging())
     RDCLOG("execv(%s)", pathname);
 
-  return execve2(pathname, argv, environ);
+  return execve(pathname, argv, environ);
 }
 
 __attribute__((visibility("default"))) int execvp(const char *pathname, char *const argv[])
@@ -198,24 +198,24 @@ __attribute__((visibility("default"))) int execvp(const char *pathname, char *co
   return execvpe(pathname, argv, environ);
 }
 
-__attribute__((visibility("default"))) int execve2(const char *pathname, char *const argv[],
+__attribute__((visibility("default"))) int execve(const char *pathname, char *const argv[],
                                                   char *const envp[])
 {
 	std::cout <<"pathname = " << pathname << std::endl;
   if(!realexecve)
   {
     if(Linux_Debug_PtraceLogging())
-      RDCLOG("unhooked early execve2(%s)", pathname);
+      RDCLOG("unhooked early execve(%s)", pathname);
 
     std::cout <<"---------------------1" << std::endl;
-    EXECVEPROC passthru = (EXECVEPROC)dlsym(RTLD_NEXT, "execve2");
+    EXECVEPROC passthru = (EXECVEPROC)dlsym(RTLD_NEXT, "execve");
     return passthru(pathname, argv, envp);
   }
 
     std::cout <<"---------------------2" << std::endl;
   if(RenderDoc::Inst().IsReplayApp())
   {
-    std::cout << "-----------------begin real execve2------------------" << std::endl;
+    std::cout << "-----------------begin real execve------------------" << std::endl;
     int index = 0;
     while(argv[index])
     {
@@ -242,14 +242,14 @@ __attribute__((visibility("default"))) int execve2(const char *pathname, char *c
   if(!RenderDoc::Inst().GetCaptureOptions().hookIntoChildren)
   {
     if(Linux_Debug_PtraceLogging())
-      RDCLOG("unhooked execve2(%s)", pathname);
+      RDCLOG("unhooked execve(%s)", pathname);
     std::cout << "------------------------4" << std::endl;
     GetUnhookedEnvp(envp, envpStr, modifiedEnv);
     return realexecve(pathname, argv, modifiedEnv.data());
   }
   std::cout << "-------------------------5"<<std::endl;
   if(Linux_Debug_PtraceLogging())
-    RDCLOG("hooked execve2(%s)", pathname);
+    RDCLOG("hooked execve(%s)", pathname);
   std::cout << "----------------------6" << std::endl;
   GetHookedEnvp(envp, envpStr, modifiedEnv);
   return realexecve(pathname, argv, modifiedEnv.data());
