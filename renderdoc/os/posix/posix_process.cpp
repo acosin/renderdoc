@@ -29,6 +29,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
+#include <string>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
@@ -41,6 +42,7 @@
 #include "core/core.h"
 #include "os/os_specific.h"
 #include "strings/string_utils.h"
+
 
 // defined in apple_helpers.mm
 extern rdcstr apple_GetExecutablePathFromAppBundle(const char *appBundlePath);
@@ -950,32 +952,39 @@ rdcpair<RDResult, uint32_t> Process::LaunchAndInjectIntoProcess(
     j++;
   }
   printf("----------------------end penv---------------------------\n");
+    const char * filter[] = {
+    "COLUMNS",
+    "DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1",
+    "DISABLE_LAYER_NV_OPTIMUS_1",
+    "DISABLE_RTSS_LAYER",
+    "DISABLE_VULKAN_OBS_CAPTURE",
+    "DISABLE_VULKAN_OW_OBS_CAPTURE",
+    "ENABLE_VULKAN_RENDERDOC_CAPTURE",
+    // "LD_LIBRARY_PATH",
+    // "LD_PRELOAD",
+    "LINES",
+    "NODEVICE_SELECT",
+    "QT_NO_SUBTRACTOPAQUESIBLINGS",
+    "RENDERDOC_CAPFILE",
+    "RENDERDOC_CAPOPTS",
+    "RENDERDOC_DEBUG_LOG_FILE",
+    "RENDERDOC_ORIGLIBPATH",
+    "RENDERDOC_ORIGPRELOAD",
+    "VK_LAYER_bandicam_helper_DEBUG_1",
+    0
+    };
+
+    int filter_size = 0;
+    int idx = 0;
+    while (filter[idx])
+    {
+      idx ++;
+    }
+    filter_size = idx - 1;
+    
 #if 0
   char **envp = new char *[env.size() + 1];
   envp[env.size()] = NULL;
-  const char * filter[] = {
-    "COLUMNS",
-  "DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1",
-  "DISABLE_LAYER_NV_OPTIMUS_1",
-  "DISABLE_RTSS_LAYER",
-  "DISABLE_VULKAN_OBS_CAPTURE",
-  "DISABLE_VULKAN_OW_OBS_CAPTURE",
-  "ENABLE_VULKAN_RENDERDOC_CAPTURE",
-  // "LD_LIBRARY_PATH",
-  // "LD_PRELOAD",
-  "LINES",
-  "NODEVICE_SELECT",
-  "QT_NO_SUBTRACTOPAQUESIBLINGS",
-  "RENDERDOC_CAPFILE",
-  "RENDERDOC_CAPOPTS",
-  "RENDERDOC_DEBUG_LOG_FILE",
-  "RENDERDOC_ORIGLIBPATH",
-  "RENDERDOC_ORIGPRELOAD",
-  "VK_LAYER_bandicam_helper_DEBUG_1",
-  0
-  };
-
-
 
   int i = 0;
   for(auto it = env.begin(); it != env.end(); it++)
@@ -1003,16 +1012,35 @@ rdcpair<RDResult, uint32_t> Process::LaunchAndInjectIntoProcess(
     }    
   }
 #else
-  char **envp = new char *[j + 1];
-  int k =0;
+  std::map<std::string, std::string> env_map;
+  for(auto it = env.begin(); it != env.end(); it++)
+  {
+    rdcstr envline = it->first + "=" + it->second;
+    env_map[it->first.c_str()] = envline.c_str();  
+  }
+
+  std::map<std::string, std::string> opts_env_map;
+  int k = 0;
   while (opts.penv[k])
   {
-    int len = strlen(opts.penv[k]);
-    envp[k] = new char[len + 1];
-    memcpy(envp[k], opts.penv[k], len + 1);
+    std::string line = opts.penv[k];
+    int pos = line.find('=');
+    std::string key = line.substr(0, pos);
+    std::string value = line.substr(pos+1);
+    opts_env_map[key] = value;
     k++;
   }
-  envp[j] = 0;
+  char **envp = new char *[opts_env_map.size() + 1];
+  k=0;
+  for (auto it : opts_env_map)
+  {
+    std::string line = it.first + "=" + it.second;
+    envp[k] = new char[line.size() + 1];
+    memcpy(envp[k], line.c_str(), line.size() + 1);
+    k++;
+  }
+  
+
 #endif
 
 
