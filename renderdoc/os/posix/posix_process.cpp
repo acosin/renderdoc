@@ -955,20 +955,13 @@ rdcpair<RDResult, uint32_t> Process::LaunchAndInjectIntoProcess(
     i++;
     
   }
-<<<<<<< HEAD
-
-=======
   printf("----------------------env&penv---------------------------\n");
->>>>>>> 133ceb6b6... output envp and opts.penv
   {
     int j =0;
     while (opts.penv[j])
     {
       printf("%s\n", opts.penv[j]);
-<<<<<<< HEAD
-=======
       j++;
->>>>>>> 133ceb6b6... output envp and opts.penv
     }
   }
 
