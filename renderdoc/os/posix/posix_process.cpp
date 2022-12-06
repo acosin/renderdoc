@@ -1003,7 +1003,7 @@ rdcpair<RDResult, uint32_t> Process::LaunchAndInjectIntoProcess(
     }    
   }
 #else
-  char **envp = new char *[j];
+  char **envp = new char *[j + 1];
   int k =0;
   while (opts.penv[k])
   {
@@ -1012,6 +1012,7 @@ rdcpair<RDResult, uint32_t> Process::LaunchAndInjectIntoProcess(
     memcpy(envp[k], opts.penv[k], len + 1);
     k++;
   }
+  envp[j] = 0;
 #endif
 
 
