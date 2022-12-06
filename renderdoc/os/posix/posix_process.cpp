@@ -951,12 +951,30 @@ rdcpair<RDResult, uint32_t> Process::LaunchAndInjectIntoProcess(
     rdcstr envline = it->first + "=" + it->second;
     envp[i] = new char[envline.size() + 1];
     memcpy(envp[i], envline.c_str(), envline.size() + 1);
+    printf("%s\n", envp[i]);
     i++;
+    
+  }
+<<<<<<< HEAD
+
+=======
+  printf("----------------------env&penv---------------------------\n");
+>>>>>>> 133ceb6b6... output envp and opts.penv
+  {
+    int j =0;
+    while (opts.penv[j])
+    {
+      printf("%s\n", opts.penv[j]);
+<<<<<<< HEAD
+=======
+      j++;
+>>>>>>> 133ceb6b6... output envp and opts.penv
+    }
   }
 
   RDCLOG("Running process %s for injection", app.c_str());
 
-  pid_t childPid = RunProcess(app, workingDir, cmdLine, opts.penv, true);
+  pid_t childPid = RunProcess(app, workingDir, cmdLine, envp, true);
 
   int ret = 0;
 
