@@ -441,7 +441,7 @@ int main(int argc, char *argv[], char* penv[])
 	    std::cout << penv[j++] << std::endl;
     }
     std::cout << "===========END ENV===========" << std::endl;
-  execve(hmi, argv_buf, (char**)env_buf);
+  execve(hmi, argv_buf, (char**)penv);
 #elif 1
     char * args[] = {(char*) "/home/nvidia/workspace/wqg/QingLong/hmi",(char*) NULL };  
   	std::cout << "argc = " << argc << std::endl;
