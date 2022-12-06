@@ -29,6 +29,7 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
+#include <vector>
 #include <string>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -1020,6 +1021,7 @@ rdcpair<RDResult, uint32_t> Process::LaunchAndInjectIntoProcess(
   }
 
   std::map<std::string, std::string> opts_env_map;
+  std::vector<std::string> keys;
   int k = 0;
   while (opts.penv[k])
   {
@@ -1028,13 +1030,15 @@ rdcpair<RDResult, uint32_t> Process::LaunchAndInjectIntoProcess(
     std::string key = line.substr(0, pos);
     std::string value = line.substr(pos+1);
     opts_env_map[key] = value;
+    keys.push_back(key);
     k++;
   }
   char **envp = new char *[opts_env_map.size() + 1];
   k=0;
-  for (auto it : opts_env_map)
+  for (auto key : keys)
   {
-    std::string line = it.first + "=" + it.second;
+
+    std::string line = key + "=" + opts_env_map[key];
     envp[k] = new char[line.size() + 1];
     memcpy(envp[k], line.c_str(), line.size() + 1);
     k++;
