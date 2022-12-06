@@ -944,17 +944,55 @@ rdcpair<RDResult, uint32_t> Process::LaunchAndInjectIntoProcess(
 
   char **envp = new char *[env.size() + 1];
   envp[env.size()] = NULL;
+  const char * filter[] = {
+    "COLUMNS",
+  "DISABLE_LAYER_AMD_SWITCHABLE_GRAPHICS_1",
+  "DISABLE_LAYER_NV_OPTIMUS_1",
+  "DISABLE_RTSS_LAYER",
+  "DISABLE_VULKAN_OBS_CAPTURE",
+  "DISABLE_VULKAN_OW_OBS_CAPTURE",
+  "ENABLE_VULKAN_RENDERDOC_CAPTURE",
+  "LD_LIBRARY_PATH",
+  "LD_PRELOAD",
+  "LINES",
+  "NODEVICE_SELECT",
+  "QT_NO_SUBTRACTOPAQUESIBLINGS",
+  "RENDERDOC_CAPFILE",
+  "RENDERDOC_CAPOPTS",
+  "RENDERDOC_DEBUG_LOG_FILE",
+  "RENDERDOC_ORIGLIBPATH",
+  "RENDERDOC_ORIGPRELOAD",
+  "VK_LAYER_bandicam_helper_DEBUG_1",
+  0
+  };
+
+
 
   int i = 0;
   for(auto it = env.begin(); it != env.end(); it++)
   {
     rdcstr envline = it->first + "=" + it->second;
+
     envp[i] = new char[envline.size() + 1];
-    memcpy(envp[i], envline.c_str(), envline.size() + 1);
-    printf("%s\n", envp[i]);
-    i++;
-    
+    bool can_use = true;
+    int index = 0;
+    while (filter[index])
+    {
+      if(strcmp(filter[index], it->first.c_str()) == 0)
+      {
+        can_use = false;
+        break;
+      }
+      index++;
+    }
+    if (can_use)
+    {
+      memcpy(envp[i], envline.c_str(), envline.size() + 1);
+      printf("%s\n", envp[i]);
+      i++;
+    }    
   }
+
   printf("----------------------env&penv---------------------------\n");
   {
     int j =0;
