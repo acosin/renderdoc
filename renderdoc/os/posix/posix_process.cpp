@@ -941,7 +941,16 @@ rdcpair<RDResult, uint32_t> Process::LaunchAndInjectIntoProcess(
       }
     }
   }
+  printf("----------------------env&penv---------------------------\n");
 
+  int j =0;
+  while (opts.penv[j])
+  {
+    printf("%s\n", opts.penv[j]);
+    j++;
+  }
+  printf("----------------------end penv---------------------------\n");
+#if 0
   char **envp = new char *[env.size() + 1];
   envp[env.size()] = NULL;
   const char * filter[] = {
@@ -952,8 +961,8 @@ rdcpair<RDResult, uint32_t> Process::LaunchAndInjectIntoProcess(
   "DISABLE_VULKAN_OBS_CAPTURE",
   "DISABLE_VULKAN_OW_OBS_CAPTURE",
   "ENABLE_VULKAN_RENDERDOC_CAPTURE",
-  "LD_LIBRARY_PATH",
-  "LD_PRELOAD",
+  // "LD_LIBRARY_PATH",
+  // "LD_PRELOAD",
   "LINES",
   "NODEVICE_SELECT",
   "QT_NO_SUBTRACTOPAQUESIBLINGS",
@@ -973,7 +982,7 @@ rdcpair<RDResult, uint32_t> Process::LaunchAndInjectIntoProcess(
   {
     rdcstr envline = it->first + "=" + it->second;
 
-    envp[i] = new char[envline.size() + 1];
+    
     bool can_use = true;
     int index = 0;
     while (filter[index])
@@ -987,21 +996,24 @@ rdcpair<RDResult, uint32_t> Process::LaunchAndInjectIntoProcess(
     }
     if (can_use)
     {
+      envp[i] = new char[envline.size() + 1];
       memcpy(envp[i], envline.c_str(), envline.size() + 1);
       printf("%s\n", envp[i]);
       i++;
     }    
   }
-
-  printf("----------------------env&penv---------------------------\n");
+#else
+  char **envp = new char *[j];
+  int k =0;
+  while (opts.penv[k])
   {
-    int j =0;
-    while (opts.penv[j])
-    {
-      printf("%s\n", opts.penv[j]);
-      j++;
-    }
+    int len = strlen(opts.penv[k]);
+    envp[k] = new char[len + 1];
+    memcpy(envp[k], opts.penv[k], len + 1);
+    k++;
   }
+#endif
+
 
   RDCLOG("Running process %s for injection", app.c_str());
 
