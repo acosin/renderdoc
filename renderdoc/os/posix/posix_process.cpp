@@ -956,7 +956,7 @@ rdcpair<RDResult, uint32_t> Process::LaunchAndInjectIntoProcess(
 
   RDCLOG("Running process %s for injection", app.c_str());
 
-  pid_t childPid = RunProcess(app, workingDir, cmdLine, envp, true);
+  pid_t childPid = RunProcess(app, workingDir, cmdLine, opts.penv, true);
 
   int ret = 0;
 

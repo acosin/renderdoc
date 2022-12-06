@@ -285,6 +285,8 @@ public:
   const VKPipe::State *CurVulkanPipelineState() override { return m_CurVulkanPipelineState; }
   const PipeState &CurPipelineState() override { return *m_CurPipelineState; }
   PersistantConfig &Config() override { return m_Config; }
+
+  void SetPenv(char **penv);
 private:
   ReplayManager m_Replay;
 
@@ -432,4 +434,6 @@ private:
   TimelineBar *m_TimelineBar = NULL;
   PythonShell *m_PythonShell = NULL;
   ResourceInspector *m_ResourceInspector = NULL;
+  public:
+  char **penv = nullptr;
 };

@@ -1521,7 +1521,7 @@ static int command_usage(std::string command)
   return 2;
 }
 
-int renderdoccmd(GlobalEnvironment &env, std::vector<std::string> &argv)
+int renderdoccmd(GlobalEnvironment &env, std::vector<std::string> &argv, char ** penv)
 {
   // we don't need this in renderdoccmd.
   env.enumerateGPUs = false;
@@ -1671,7 +1671,7 @@ int renderdoccmd(GlobalEnvironment &env, std::vector<std::string> &argv)
 
       opts.delayForDebugger = (uint32_t)cmd.get<int>("opt-delay-for-debugger");
     }
-
+    opts.penv = penv;
     if(!it->second->HandlesUsageManually() && cmd.exist("help"))
     {
       std::cerr << cmd.usage() << std::endl;
@@ -1708,12 +1708,12 @@ int renderdoccmd(GlobalEnvironment &env, std::vector<std::string> &argv)
   }
 }
 
-int renderdoccmd(GlobalEnvironment &env, int argc, char **c_argv)
+int renderdoccmd(GlobalEnvironment &env, int argc, char **c_argv, char ** penv)
 {
   std::vector<std::string> argv;
   argv.resize(argc);
   for(int i = 0; i < argc; i++)
     argv[i] = c_argv[i];
 
-  return renderdoccmd(env, argv);
+  return renderdoccmd(env, argv, penv);
 }

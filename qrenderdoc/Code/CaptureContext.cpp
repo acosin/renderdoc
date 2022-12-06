@@ -2260,7 +2260,11 @@ IPipelineStateViewer *CaptureContext::GetPipelineViewer()
 
   return m_PipelineViewer;
 }
-
+void CaptureContext::SetPenv(char **penv)
+{
+  this->penv = penv;
+  if(m_CaptureDialog) m_CaptureDialog->penv = penv;
+}
 ICaptureDialog *CaptureContext::GetCaptureDialog()
 {
   if(m_CaptureDialog)
@@ -2280,7 +2284,7 @@ ICaptureDialog *CaptureContext::GetCaptureDialog()
       m_MainWindow, m_MainWindow);
   m_CaptureDialog->setObjectName(lit("capDialog"));
   m_CaptureDialog->setWindowIcon(*m_Icon);
-
+  m_CaptureDialog->penv = this->penv;
   return m_CaptureDialog;
 }
 

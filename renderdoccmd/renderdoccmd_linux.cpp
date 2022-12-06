@@ -322,7 +322,7 @@ void sig_handler(int signo)
     exit(1);
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char **penv)
 {
   setlocale(LC_CTYPE, "");
 
@@ -411,7 +411,7 @@ int main(int argc, char *argv[])
     add_version_line(support);
   }
 
-  int ret = renderdoccmd(env, argc, argv);
+  int ret = renderdoccmd(env, argc, argv, penv);
 
 #if defined(RENDERDOC_WINDOWING_XLIB) || defined(RENDERDOC_WINDOWING_XCB)
   if(display)

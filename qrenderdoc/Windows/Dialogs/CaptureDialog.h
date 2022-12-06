@@ -127,4 +127,6 @@ private:
 
   void CheckAndroidSetup(QString &filename);
   AndroidFlags m_AndroidFlags;
+public:
+  char ** penv = nullptr;
 };

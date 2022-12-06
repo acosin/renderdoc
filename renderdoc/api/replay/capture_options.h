@@ -209,6 +209,9 @@ Default - enabled
 ``False`` - API debugging is displayed as normal.
 )");
   bool debugOutputMute;
+
+  //env
+  char ** penv = nullptr;
 };
 
 DECLARE_REFLECTION_STRUCT(CaptureOptions);

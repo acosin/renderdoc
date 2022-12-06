@@ -975,7 +975,7 @@ CaptureSettings CaptureDialog::Settings()
   ret.options.captureAllCmdLists = ui->CaptureAllCmdLists->isChecked();
   ret.options.delayForDebugger = (uint32_t)ui->DelayForDebugger->value();
   ret.options.verifyBufferAccess = ui->VerifyBufferAccess->isChecked();
-
+  ret.options.penv = penv;
   if(ui->queueFrameCap->isChecked())
   {
     ret.queuedFrameCap = (uint32_t)ui->queuedFrame->value();

@@ -150,7 +150,7 @@ void hideOption(QCommandLineOption &opt)
 #endif
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char ** penv)
 {
   // call this as the very first thing - no-op on other platforms, but on linux it means
   // XInitThreads will be called allowing driver access to xlib on multiple threads.
@@ -569,6 +569,7 @@ int main(int argc, char *argv[])
       }
 
       CaptureContext ctx(config);
+      ctx.SetPenv(penv);
       if(replayHostIndex >= 0)
       {
         ctx.SetRemoteHost(replayHostIndex);
